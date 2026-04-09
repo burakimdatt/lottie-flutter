@@ -1,5 +1,7 @@
 import 'dart:ui';
+
 import 'package:vector_math/vector_math_64.dart';
+
 import '../../l.dart';
 import '../../lottie_drawable.dart';
 import '../../lottie_property.dart';
@@ -21,6 +23,7 @@ import 'path_content.dart';
 
 class FillContent implements DrawingContent, KeyPathElementContent {
   final Path _path = Path();
+  final PathFillType _fillType;
   final BaseLayer layer;
   @override
   final String? name;
@@ -36,7 +39,8 @@ class FillContent implements DrawingContent, KeyPathElementContent {
 
   FillContent(this.lottieDrawable, this.layer, ShapeFill fill)
     : name = fill.name,
-      _hidden = fill.hidden {
+      _hidden = fill.hidden,
+      _fillType = fill.fillType {
     var blurEffect = layer.blurEffect;
     if (blurEffect != null) {
       _blurAnimation = blurEffect.blurriness.createAnimation()
@@ -112,6 +116,7 @@ class FillContent implements DrawingContent, KeyPathElementContent {
     }
 
     _path.reset();
+    _path.fillType = _fillType;
     for (var i = 0; i < _paths.length; i++) {
       _path.addPath(_paths[i].getPath(), Offset.zero);
     }
@@ -131,6 +136,7 @@ class FillContent implements DrawingContent, KeyPathElementContent {
   @override
   Rect getBounds(Matrix4 parentMatrix, {required bool applyParents}) {
     _path.reset();
+    _path.fillType = _fillType;
     for (var i = 0; i < _paths.length; i++) {
       _path.addPath(
         _paths[i].getPath(),
