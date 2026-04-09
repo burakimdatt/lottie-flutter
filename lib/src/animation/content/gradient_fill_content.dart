@@ -52,7 +52,6 @@ class GradientFillContent implements DrawingContent, KeyPathElementContent {
       _opacityAnimation = _fill.opacity.createAnimation(),
       _startPointAnimation = _fill.startPoint.createAnimation(),
       _endPointAnimation = _fill.endPoint.createAnimation() {
-    _path.fillType = _fill.fillType;
     _colorAnimation.addUpdateListener(invalidate);
     layer.addAnimation(_colorAnimation);
 
@@ -105,6 +104,7 @@ class GradientFillContent implements DrawingContent, KeyPathElementContent {
     }
     L.beginSection('GradientFillContent#draw');
     _path.reset();
+    _path.fillType = _fill.fillType;
     for (var i = 0; i < _paths.length; i++) {
       _path.addPath(_paths[i].getPath(), Offset.zero);
     }
@@ -155,6 +155,7 @@ class GradientFillContent implements DrawingContent, KeyPathElementContent {
   @override
   Rect getBounds(Matrix4 parentMatrix, {required bool applyParents}) {
     _path.reset();
+    _path.fillType = _fill.fillType;
     for (var i = 0; i < _paths.length; i++) {
       _path.addPath(
         _paths[i].getPath(),
